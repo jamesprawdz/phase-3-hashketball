@@ -1,4 +1,6 @@
 # Write your code below game_hash
+# require 'pry'
+
 def game_hash
   {
     home: {
@@ -15,6 +17,7 @@ def game_hash
           steals: 3,
           blocks: 1,
           slam_dunks: 1
+
         },
         {
           player_name: "Reggie Evans",
@@ -127,3 +130,64 @@ def game_hash
 end
 
 # Write code here
+
+# helper method to access an array of all players from both teams
+def all_players
+  game_hash[:home][:players] + game_hash[:away][:players]
+end
+
+def num_points_scored(player_name)
+  player = player_stats(player_name)
+  player[:points]
+end
+
+def shoe_size(player_name)
+  player = player_stats(player_name)
+  player[:shoe]
+end
+
+# helper method to find team by their name
+def find_team(team_name)
+  team_info = game_hash.find do |location, team_data|
+    team_data[:team_name] == team_name
+  end
+  team_info[1]
+end
+
+def team_colors(team_name)
+  team = find_team(team_name)
+  team[:colors]
+end
+
+# helper method
+def player_stats(player_name)
+  all_players.find do |player|
+    player[:player_name] == player_name
+  end
+end
+
+def team_names
+  game_hash.map do |location, team_data|
+    team_data[:team_name]
+  end
+end
+
+def player_numbers(team_name)
+  team = find_team(team_name)
+  team[:players].map do |player|
+    player[:number]
+  end
+end
+
+# helper method to find player with the biggest shoe
+def big_shoe_player
+  all_players.max_by do |player|
+    player[:shoe]
+  end
+end
+
+def big_shoe_rebounds
+  big_shoe_player[:rebounds]
+end
+
+# binding.pry
